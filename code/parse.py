@@ -22,7 +22,7 @@ def parse_args():
     parser.add_argument('--weight_decay', type=float, default=1e-4, help="weight decay == lambda2")
     parser.add_argument('--lambda1', type=float, default=0.1, help="lambda1 == coef of Contrstloss")
     #===========================================================================================================================================
-    parser.add_argument('--early_stop_steps', type=int, default=50, help="early stop steps")
+    parser.add_argument('--early_stop_steps', type=int, default=30, help="early stop steps")
     parser.add_argument('--latent_dim_rec', type=int, default=64, help="latent dim for rec")
     parser.add_argument('--num_layers', type=int, default=3, help="num layers of LightGCN")
     parser.add_argument('--epochs', type=int, default=500, help="training epochs")

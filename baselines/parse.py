@@ -27,7 +27,7 @@ def parse_args():
     parser.add_argument('--tau_plus', type=float, default=0.1, help="tau_plus in DCL: Debiased Contrastive Loss")
     parser.add_argument('--pop_gamma', type=float, default=0.02, help="gamma in PD(A): Popularity-bias Deconfounding (and Adjusting)")
     #===========================================================================================================================================
-    parser.add_argument('--early_stop_steps', type=int, default=50, help="early stop steps")
+    parser.add_argument('--early_stop_steps', type=int, default=30, help="early stop steps")
     parser.add_argument('--edge_drop_prob', type=float, default=0.1, help="prob to dropout egdes")
     parser.add_argument('--latent_dim_rec', type=int, default=64, help="latent dim for rec")
     parser.add_argument('--num_layers', type=int, default=3, help="num layers of LightGCN")

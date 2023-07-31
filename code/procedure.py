@@ -89,7 +89,7 @@ class Train():
         classifier_loss.backward()
         optimizer['pop'].step()
 
-        loss = world.config['weight_decay']*reg + loss_ada1 + loss_ada3*0.1
+        loss = world.config['weight_decay']*reg + loss_ada1 + loss_ada3* world.config['lambda1']
         optimizer['emb'].zero_grad()
         loss.backward()
         optimizer['emb'].step()        
@@ -146,7 +146,7 @@ class Train():
         ada_coef1 = self.loss.get_coef_adaptive(batch_users, batch_pos1, method='mlp', mode=world.config['centroid_mode'])
         ada_coef2 = self.loss.get_coef_adaptive(batch_users, batch_pos2, method='mlp', mode=world.config['centroid_mode'])
 
-        pos_aug, coef_aug, _ = self.mixup(pos_emb1, pos_emb2, ada_coef1, ada_coef2)
+        pos_aug, coef_aug = self.mixup(pos_emb1, pos_emb2, ada_coef1, ada_coef2)
 
         loss_ada1 = self.loss.adaptive_loss(users_emb, pos_emb1, ada_coef1)
         loss_ada3 = self.loss.adaptive_loss(users_emb, pos_aug, coef_aug)
@@ -168,34 +168,21 @@ class Train():
 
         return loss, classifier_acc
 
-    
     def mixup(self, x1, x2, y1=None, y2=None):
         alpha = 2.
         beta = 2.
         size = [len(x1), 1]
         l = np.random.beta(alpha, beta, size)
-        mixed_x = torch.tensor(l, dtype=torch.float32).to(x1.device) * x1 + torch.tensor(1-l, dtype=torch.float32).to(x2.device) * x2
+        mixed_x = torch.tensor(l, dtype=torch.float32).to(x1.device) * x1 - torch.tensor(1-l, dtype=torch.float32).to(x2.device) * x2
         if y1 is None:
-            return mixed_x, None, torch.tensor(l, dtype=torch.float32).to(x1.device)
+            return mixed_x, None
         else:
             mixed_y = torch.tensor(l, dtype=torch.float32).to(y1.device) * y1 + torch.tensor(1-l, dtype=torch.float32).to(y2.device) * y2
-            return mixed_x, mixed_y, torch.tensor(l, dtype=torch.float32).to(x1.device)
+            return mixed_x, mixed_y
         
     def coef_mixup(self, epcoh):
         return 1/(epcoh+1)
-    
-    def advers_train(self, items_emb, batch_item, classifier, optimizer):
-        #固定classifier的参数
-        for param in classifier.parameters():
-            param.requires_grad = False
 
-        CE_loss, acc = classifier.cal_loss_and_test(items_emb, batch_item)
-
-        #重新允许classifier参数更新
-        for param in classifier.parameters():
-            param.requires_grad = True
-
-        return CE_loss
 
 
 class Test():

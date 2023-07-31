@@ -55,7 +55,7 @@ def main():
         wandb.define_metric(f"{world.config['dataset']}"+f'/valid_ndcg@{str(k)}', step_metric='epoch')
         wandb.define_metric(f"{world.config['dataset']}"+f'/valid_precision@{str(k)}', step_metric='epoch')
         for group in range(world.config['pop_group']):
-            wandb.define_metric(f"{world.config['dataset']}"+f"/groups/recall_group_{group+1}_@{str(k)}", step_metric='epoch')
+            wandb.define_metric(f"{world.config['dataset']}"+f"/groups/recall_group_{group+1}@{str(k)}", step_metric='epoch')
     wandb.define_metric(f"{world.config['dataset']}"+f"/training_time", step_metric='epoch')
 
     wandb.define_metric(f"{world.config['dataset']}"+'/pop_classifier_acc', step_metric='epoch')
@@ -196,10 +196,11 @@ def main():
                         print(f"early stop triggerd at epoch {epoch}, best recall: {best_result_recall}, in group: {best_result_recall_group}")
                         #将当前参数配置和获得的最佳结果记录
                         break
-
-                Ratings_group = Recmodel.getItemRating()
-                for group in range(world.config['pop_group']):
-                    wandb.log({f"{world.config['dataset']}"+f"/groups/Rating_group_{group+1}": Ratings_group[group]})
+                    
+                if world.config['if_visual'] == 1:
+                    Ratings_group = Recmodel.getItemRating()
+                    for group in range(world.config['pop_group']):
+                        wandb.log({f"{world.config['dataset']}"+f"/groups/Rating_group_{group+1}": Ratings_group[group]})
                 
                 for i in range(len(world.config['topks'])):
                     k = world.config['topks'][i]
@@ -207,7 +208,7 @@ def main():
                                 f"{world.config['dataset']}"+f'/ndcg@{str(k)}': result["ndcg"][i],
                                 f"{world.config['dataset']}"+f'/precision@{str(k)}': result["precision"][i]})
                     for group in range(world.config['pop_group']):
-                        wandb.log({f"{world.config['dataset']}"+f"/groups/recall_group_{group+1}_@{str(k)}": result['recall_pop_Contribute'][group][i]})
+                        wandb.log({f"{world.config['dataset']}"+f"/groups/recall_group_{group+1}@{str(k)}": result['recall_pop_Contribute'][group][i]})
                         
 
 

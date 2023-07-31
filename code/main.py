@@ -254,9 +254,10 @@ def main():
                         #将当前参数配置和获得的最佳结果记录
                         break
                 
-                # Ratings_group = Recmodel.getItemRating()
-                # for group in range(world.config['pop_group']):
-                #     wandb.log({f"{world.config['dataset']}"+f"/groups/Rating_group_{group+1}": Ratings_group[group]})
+                if world.config['if_visual'] == 1:
+                    Ratings_group = Recmodel.getItemRating()
+                    for group in range(world.config['pop_group']):
+                        wandb.log({f"{world.config['dataset']}"+f"/groups/Rating_group_{group+1}": Ratings_group[group]})
 
 
                 for i in range(len(world.config['topks'])):
