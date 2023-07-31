@@ -77,13 +77,12 @@ if args.method == 'Adaloss':
         temp_tau = 0.1
         lambda1 = 0.1
         centroid = 'eigenvector'
-        e = 1#TODO
-        os.system(f'python main.py --project {project} --name {args.method} --notes Ablation_only_Adaloss --tag Ablation --group ours --job_type {args.dataset} --model LightGCN --loss Adaptive --augment No --lambda1 {lambda1} --temp_tau_pop {temp_tau} --temp_tau {temp_tau} --centroid_mode {centroid}\
-                    --dataset {args.dataset} --cuda {args.device} --comment _ --if_valid {args.valid} --if_visual {args.visual} --visual_epoch {e} --seed {args.seed} --c {args.c}')
+        os.system(f'python main.py --project {project} --name {args.method} --notes Ablation_only_Adaloss --tag Ablation --group ours --job_type {args.dataset} --model LightGCN --loss Adaptive --augment No --lambda1 {lambda1} --temp_tau {temp_tau} --centroid_mode {centroid}\
+                    --dataset {args.dataset} --cuda {args.device} --comment _ --if_valid {args.valid} --if_visual {args.visual} --visual_epoch 5 --seed {args.seed} --c {args.c}')
     
     if args.dataset in ['ifashion']:
         temp_tau = 0.1
         lambda1 = 0.1
         centroid = 'pagerank'
-        os.system(f'python main.py --project {project} --name {args.method} --notes Ablation_only_Adaloss --tag Ablation --group ours --job_type {args.dataset} --model LightGCN --loss Adaptive --augment No --lambda1 {lambda1} --temp_tau_pop {temp_tau} --temp_tau {temp_tau} --centroid_mode {centroid}\
+        os.system(f'python main.py --project {project} --name {args.method} --notes Ablation_only_Adaloss --tag Ablation --group ours --job_type {args.dataset} --model LightGCN --loss Adaptive --augment No --lambda1 {lambda1} --temp_tau {temp_tau} --centroid_mode {centroid}\
                     --dataset {args.dataset} --cuda {args.device} --comment _ --if_valid {args.valid} --if_visual {args.visual} --visual_epoch 5 --seed {args.seed} --c {args.c}')
